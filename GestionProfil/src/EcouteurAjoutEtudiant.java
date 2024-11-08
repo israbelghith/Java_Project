@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 public class EcouteurAjoutEtudiant implements ActionListener {
     EtudiantForm e;
     public EcouteurAjoutEtudiant(EtudiantForm e) {
-
+this.e=e;
     }
 
     @Override

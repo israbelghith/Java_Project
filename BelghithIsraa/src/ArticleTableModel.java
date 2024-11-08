@@ -4,19 +4,20 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class EtudiantTableModel extends AbstractTableModel {
+public class ArticleTableModel extends AbstractTableModel {
     ArrayList<Object[]> data=new ArrayList<Object[]>();
 
-ResultSetMetaData rsmd;
-    EtudiantDAO dao;
-    public EtudiantTableModel(ResultSet rs, EtudiantDAO dao) {
+    ResultSetMetaData rsmd;
+    ArticleDAO dao;
+    public ArticleTableModel(ResultSet rs, ArticleDAO dao) {
         this.dao=dao;
         //chargement driver
         try {
             rsmd=rs.getMetaData();
             while(rs.next()){
-               Object[] t= new Object[rsmd.getColumnCount()];
+                Object[] t= new Object[rsmd.getColumnCount()];
                 for (int i = 0; i <t.length ; i++) {
+
                     t[i]=rs.getObject((i+1));
 
                 }
@@ -60,13 +61,13 @@ ResultSetMetaData rsmd;
 
         //return true tout tab est modifiable
         //seuelemt moy case
-        if(getColumnName(columnIndex).equalsIgnoreCase("Moyenne"))
+       if(getColumnName(columnIndex).equalsIgnoreCase("Quantite"))
         {
             return true;
         }
 
 
-        else if(getColumnName(columnIndex).equalsIgnoreCase("Prenom"))
+        else if(getColumnName(columnIndex).equalsIgnoreCase("Emplacement"))
         {
             return true;
         }
@@ -84,20 +85,20 @@ ResultSetMetaData rsmd;
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 
         Object[] ligne=data.get(rowIndex);
-        int cin =Integer.parseInt(ligne[columnNameToIndex("cin")]+"");
-        String nom=ligne[columnNameToIndex("nom")]+"";
-        String prenom=ligne[columnNameToIndex("prenom")]+"";
-        double moyenne= Double.parseDouble(ligne[columnNameToIndex("moyenne")]+"");
+        int id =Integer.parseInt(ligne[columnNameToIndex("Id")]+"");
+        String nom=ligne[columnNameToIndex("Nom")]+"";
 
-        if(columnIndex==columnNameToIndex("moyenne"))
+        double qte= Double.parseDouble(ligne[columnNameToIndex("Quantite")]+"");
+        String empl=ligne[columnNameToIndex("Emplacement")]+"";
+       if(columnIndex==columnNameToIndex("Quantite"))
         {
-            moyenne =Double.parseDouble(aValue+"");
+            qte =Double.parseDouble(aValue+"");
         }
-        else if(columnIndex==columnNameToIndex("prenom"))
+        else if(columnIndex==columnNameToIndex("Emplacement"))
         {
-            prenom =aValue+"";
+            empl =aValue+"";
         }
-        int a=dao.updateEtudiant(cin,nom,prenom,moyenne);
+        int a=dao.updateArticle(id,nom,qte,empl);
         if(a>0)
         {
             data.get(rowIndex)[columnIndex]=aValue;
@@ -105,33 +106,33 @@ ResultSetMetaData rsmd;
     }
 
 
-//ajout dans la partie dans la base et  interface
-    public int ajoutEtudiant(int cin, String nom, String prenom, double moyenne) {
+    //ajout dans la partie dans la base et  interface
+   /* public int ajoutEtudiant(int cin, String nom, String prenom, double moyenne) {
         int a=0;
         EtudiantDAO dao=new EtudiantDAO();
         a=dao.insertEtudiant2(cin,nom,prenom,moyenne);
-if (a>0)
-{
-    data.add(new Object[]{cin,nom,prenom,moyenne});
-    //rerunder sur écran
-    fireTableDataChanged();
-}
-        return a;
-    }
-
-
-
-//rowAtPoint => indice de ligne
-    public int supprimerEtudiant(int rowAtPoint) {
-        int a=0;
-        int indice=columnNameToIndex("cin");
-        if(indice>=0){
-        int cin=Integer.parseInt(data.get(rowAtPoint)[indice]+"");
-        a=dao.deleteEtudiant(cin);
-        if(a>0){
-            data.remove(rowAtPoint);
+        if (a>0)
+        {
+            data.add(new Object[]{cin,nom,prenom,moyenne});
+            //rerunder sur écran
             fireTableDataChanged();
         }
+        return a;
+    }*/
+
+
+
+    //rowAtPoint => indice de ligne
+    public int supprimerEtudiant(int rowAtPoint) {
+        int a=0;
+        int indice=columnNameToIndex("id");
+        if(indice>=0){
+            int id=Integer.parseInt(data.get(rowAtPoint)[indice]+"");
+            a=dao.deleteArticle(id);
+            if(a>0){
+                data.remove(rowAtPoint);
+                fireTableDataChanged();
+            }
         }
 
         return a;

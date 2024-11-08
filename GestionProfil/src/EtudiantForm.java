@@ -41,16 +41,18 @@ public class EtudiantForm extends JFrame {
         pn.add(btnajout);
 
         this.add(pn, BorderLayout.NORTH);
-String req="select * from etudiant";
-dao=new EtudiantDAO();
-ResultSet rs=dao.selectEtd(req);
-//NB BD =>dao
+
+        String req="select * from etudiant";
+        dao=new EtudiantDAO();
+        ResultSet rs=dao.selectEtd(req);
+        //NB BD =>dao
         //jtable =>model
         model =new EtudiantTableModel(rs,dao);
         jt=new JTable(model);//afii=cher les titres et les données
         //jt tous ce qui est interface
         //jet.setModel(model)
         //tab string et tab objet tab de tab
+        //cette ligne est trés important
         this.add(new JScrollPane(jt),BorderLayout.CENTER);
 
        //event

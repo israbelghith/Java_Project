@@ -1,10 +1,10 @@
 import java.sql.*;
 
-public class EtudiantDAO {
+public class ArticleDAO {
     Connection conn=null;
     Statement st=null;//contient des methode qui exceute des req
     public
-    EtudiantDAO(){
+    ArticleDAO(){
         //chargement driver
 //DAO data access object class intermédiaire entre intf graphieque et bd
         try {
@@ -29,29 +29,17 @@ public class EtudiantDAO {
 
     }
 
-    int insertEtudiant(int cin,String nom, String prenom,double moyenne){
+
+    int insertArticle(String nom, double qte,String empl){
         int a=0;
-        //execution de req
-        String req_insertion="insert into etudiant values("+cin+",'"+nom+"','"+prenom+"',"+moyenne+")";
-        if(st != null){
-            try {
-                 a=st.executeUpdate(req_insertion);
-                System.out.println("insertion okkkk");
-            } catch (SQLException e) {
-                System.out.println("errr insertion "+e.getMessage());
-            }
-        }
-        return a;
-    }
-    int insertEtudiant2(int cin,String nom, String prenom,double moyenne){
-        int a=0;
-        String req="insert into etudiant values(?,?,?,?)";
+        String req="insert into article values(?,?,?)";
         try {
             PreparedStatement ps= conn.prepareStatement(req);
-            ps.setInt(1,cin);
-            ps.setString(2,nom);
-            ps.setString(3,prenom);
-            ps.setDouble(4,moyenne);
+
+            ps.setString(1,nom);
+            ps.setDouble(2,qte);
+            ps.setString(3,empl);
+
             a=ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -61,25 +49,25 @@ public class EtudiantDAO {
         return a;
     }
 
-    int deleteEtudiant(int cin){
-        String  req="delete from etudiant where cin=?";
+    int deleteArticle(int id){
+        String  req="delete from article where id=?";
         PreparedStatement ps= null;
         try {
             ps = conn.prepareStatement(req);
-            ps.setInt(1,cin);
+            ps.setInt(1,id);
             return ps.executeUpdate();
         } catch (SQLException e) {
             return 0;
         }
 
     }
-    ResultSet selectEtd(String req){
-       ResultSet rs=null;
-       //rs les données
-         //       rsmd des info sous forme tab
+    ResultSet selectArticle(String req){
+        ResultSet rs=null;
+        //rs les données
+        //       rsmd des info sous forme tab
         try {
             rs=st.executeQuery(req);
-           // System.out.println("rs: "+rs.getString(2));
+            // System.out.println("rs: "+rs.getString(2));
         } catch (SQLException e) {
             System.out.println("err de selection"+e.getMessage());
         }
@@ -87,34 +75,34 @@ public class EtudiantDAO {
     }
     void afficheResultSet(ResultSet rs){
         try{
-        ResultSetMetaData rsmdrs=rs.getMetaData();
-        int nbcol= rsmdrs.getColumnCount();
-        for (int i = 0; i <nbcol ; i++) {
+            ResultSetMetaData rsmdrs=rs.getMetaData();
+            int nbcol= rsmdrs.getColumnCount();
+            for (int i = 0; i <nbcol ; i++) {
 
-        }
-        //affichage dans le console
-        while (rs.next()){
-            //getcolname
-            int cin= rs.getInt(1);//for //getobject 
-            String nom=rs.getString(2);
-            String prenom=rs.getString(3);
-            double moy=rs.getDouble(4);
-            System.out.println("cin: "+cin+" ,nom "+nom+" ,prenom "+prenom+" ,moy "+moy);
-        }}
+            }
+            //affichage dans le console
+            while (rs.next()){
+                //getcolname
+                int cin= rs.getInt(1);//for //getobject
+                String nom=rs.getString(2);
+                String prenom=rs.getString(3);
+                double moy=rs.getDouble(4);
+                System.out.println("cin: "+cin+" ,nom "+nom+" ,prenom "+prenom+" ,moy "+moy);
+            }}
         catch (SQLException e){
             System.out.println("errr d affichage "+e.getMessage());
         }
     }
 
-    public int updateEtudiant(int cin, String nom, String prenom, double moyenne) {
+    public int updateArticle(int id, String nom, double qte,String empl ) {
         int a=0;
-        String req="update etudiant set nom =?, prenom=?, moyenne=? where cin=?";
+        String req="update article set Nom =?, Quantite=?, Emplacement=? where id=?";
         try {
             PreparedStatement ps= conn.prepareStatement(req);
             ps.setString(1,nom);
-            ps.setString(2,prenom);
-            ps.setDouble(3,moyenne);
-            ps.setInt(4,cin);
+            ps.setDouble(2,qte);
+            ps.setString(3,empl);
+            ps.setInt(4,id);
             a=ps.executeUpdate();
 
         } catch (SQLException e) {

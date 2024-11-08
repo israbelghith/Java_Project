@@ -167,7 +167,7 @@ this.setLayout(new BorderLayout());
         tf_nom.addMouseListener(new EcouteurLabel(this));
         tf_prenom.addMouseListener(new EcouteurLabel(this));
         tf_pseudo.addMouseListener(new EcouteurLabel(this));
-        //ecouteur sur le ocus
+        //ecouteur sur le focus
         tf_nom.addFocusListener(new EcouteurFocus(this));
         tf_prenom.addFocusListener(new EcouteurFocus(this));
         tf_pseudo.addFocusListener(new EcouteurFocus(this));
